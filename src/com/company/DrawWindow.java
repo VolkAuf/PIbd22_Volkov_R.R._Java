@@ -1,21 +1,21 @@
 package com.company;
 
 import javax.swing.*;
-;import java.awt.*;
+import java.awt.*;
 
 public class DrawWindow extends JPanel {
 
-    private Airbus air;
+    private Airbus airbus;
 
     public void paintComponent(Graphics g) {
-        if (air != null) air.DrawTransport(g);
+        if (airbus != null) airbus.DrawTransport(g);
     }
 
-    public void setAir(Airbus air) {
-        this.air = air;
+    public void setAirbus(Airbus airbus) {
+        this.airbus = airbus;
     }
 
-    public Airbus getAir() {
-        return air;
+    public Airbus getAirbus() {
+        return airbus;
     }
 }

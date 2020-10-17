@@ -8,31 +8,31 @@ public class Airbus {
     private int _startPosY;
     private int _pictureWidth;
     private int _pictureHeight;
-    private int airplaneWidth = 150;
-    private int airplaneHeight = 80;
-    public int MaxSpeed;
-    public float Weight;
-    public Color MainColor;
-    public Color DopColor;
-    public boolean BackTurbine;
-    public boolean SideTurbine;
-    public boolean ReclamLine;
-    public boolean RegulTail;
-    public boolean SecondFloor;
-    private Illuminate illuminate;
+    private final int airplaneWidth = 150;
+    private final int airplaneHeight = 80;
+    public int maxSpeed;
+    public float weight;
+    public Color mainColor;
+    public Color dopColor;
+    public boolean backTurbine;
+    public boolean sideTurbine;
+    public boolean marketLine;
+    public boolean regulTail;
+    public boolean secondFloor;
+    private final Illuminate illuminate;
 
     public Airbus(int maxSpeed, float weight, Color mainColor, Color dopColor, int countIlluminate,
-                  boolean backTurbine, boolean sideTurbine, boolean reclamLine, boolean regulTail,
+                  boolean backTurbine, boolean sideTurbine, boolean marketLine, boolean regulTail,
                   boolean secondFloor) {
-        MaxSpeed = maxSpeed;
-        Weight = weight;
-        MainColor = mainColor;
-        DopColor = dopColor;
-        BackTurbine = backTurbine;
-        SideTurbine = sideTurbine;
-        ReclamLine = reclamLine;
-        RegulTail = regulTail;
-        SecondFloor = secondFloor;
+        this.maxSpeed = maxSpeed;
+        this.weight = weight;
+        this.mainColor = mainColor;
+        this.dopColor = dopColor;
+        this.backTurbine = backTurbine;
+        this.sideTurbine = sideTurbine;
+        this.marketLine = marketLine;
+        this.regulTail = regulTail;
+        this.secondFloor = secondFloor;
         illuminate = new Illuminate();
         illuminate.setDigit(countIlluminate);
     }
@@ -45,7 +45,7 @@ public class Airbus {
     }
 
     public void MoveAirTransport(Direction direction) {
-        int step = (int) (MaxSpeed * 100 / Weight);
+        int step = (int) (maxSpeed * 100 / weight);
         switch (direction) {
             case Up:
                 if (_startPosY - step > 0) {
@@ -67,14 +67,12 @@ public class Airbus {
                     _startPosX -= step;
                 }
                 break;
-
         }
-
     }
 
     public void DrawTransport(Graphics g) {
         g.setColor(Color.BLACK);
-        if (BackTurbine) {
+        if (backTurbine) {
             g.fillOval((int) (_startPosX + airplaneWidth * 0.1), (int) (_startPosY + airplaneHeight * 0.4),
                     (int) (airplaneWidth * 0.2), (int) (airplaneHeight * 0.2));
             g.setColor(Color.WHITE);
@@ -83,7 +81,7 @@ public class Airbus {
             g.drawLine((int) (_startPosX + airplaneWidth * 0.2), (int) (_startPosY + airplaneHeight * 0.4),
                     (int) (_startPosX + airplaneWidth * 0.2), (int) (_startPosY + airplaneHeight * 0.6));
         }
-        if (SideTurbine) {
+        if (sideTurbine) {
             g.setColor(Color.BLACK);
             g.fillOval((int) (_startPosX + airplaneWidth * 0.4), (int) (_startPosY + airplaneHeight * 0.01),
                     (int) (airplaneWidth * 0.1), (int) (airplaneHeight * 0.1));
@@ -101,7 +99,7 @@ public class Airbus {
             g.drawLine((int) (_startPosX + airplaneWidth * 0.45), (int) (_startPosY + airplaneHeight * 0.87),
                     (int) (_startPosX + airplaneWidth * 0.45), (int) (_startPosY + airplaneHeight * 0.97));
         }
-        g.setColor(MainColor);
+        g.setColor(mainColor);
 
         int[] pointKorpusX =
                 {
@@ -134,7 +132,7 @@ public class Airbus {
                         ((int) (_startPosX + airplaneWidth * 0.20)),
                         ((int) (_startPosX + airplaneWidth * 0.25)),
                         ((int) (_startPosX + airplaneWidth * 0.9)),
-                        ((int) (_startPosX + airplaneWidth))
+                        ((_startPosX + airplaneWidth))
                 };
         int[] pointDnoY =
                 {
@@ -145,7 +143,7 @@ public class Airbus {
                 };
         g.fillPolygon(pointDnoX, pointDnoY, 4);// Dno
 
-        g.setColor(MainColor);
+        g.setColor(mainColor);
 
         int[] pointRightWingX =
                 {
@@ -173,8 +171,8 @@ public class Airbus {
         int[] pointLeftWingY =
                 {
                         ((int) (_startPosY + airplaneHeight * 0.6)),
-                        ((int) (_startPosY + airplaneHeight - 10)),
-                        ((int) (_startPosY + airplaneHeight - 10)),
+                        ((_startPosY + airplaneHeight - 10)),
+                        ((_startPosY + airplaneHeight - 10)),
                         ((int) (_startPosY + airplaneHeight * 0.6))
                 };
         g.fillPolygon(pointLeftWingX, pointLeftWingY, 4);// Krilo
@@ -182,7 +180,7 @@ public class Airbus {
 
         int[] pointBamperX =
                 {
-                        ((int) (_startPosX + airplaneWidth)),
+                        ((_startPosX + airplaneWidth)),
                         ((int) (_startPosX + airplaneWidth * 0.9)),
                         ((int) (_startPosX + airplaneWidth * 0.8)),
                         ((int) (_startPosX + airplaneWidth * 0.9))
@@ -195,7 +193,7 @@ public class Airbus {
                         ((int) (_startPosY + airplaneHeight * 0.63))
                 };
         g.fillPolygon(pointBamperX, pointBamperY, 4);// bamper
-        g.setColor(MainColor);
+        g.setColor(mainColor);
 
         int[] pointTailX =
                 {
@@ -213,7 +211,7 @@ public class Airbus {
                 };
         g.fillPolygon(pointTailX, pointTailY, 4);// Tail
 
-        if (RegulTail) {
+        if (regulTail) {
             int[] pointSportTailX =
                     {
                             ((int) (_startPosX + airplaneWidth * 0.18)),
@@ -238,8 +236,8 @@ public class Airbus {
                     };
             g.fillPolygon(pointSportTailX, pointSportTailY, 8);// STail
         }
-        if (ReclamLine) {
-            g.setColor(DopColor);
+        if (marketLine) {
+            g.setColor(dopColor);
             int[] pointSportLineX =
                     {
                             ((int) (_startPosX + airplaneWidth * 0.15)),
@@ -257,8 +255,8 @@ public class Airbus {
             g.fillPolygon(pointSportLineX, pointSportLineY, 4);// SLine
         }
 
-        g.setColor(MainColor);
-        if (SecondFloor) {
+        g.setColor(mainColor);
+        if (secondFloor) {
             int[] pointSecondFloorX =
                     {
                             ((int) (_startPosX + airplaneWidth * 0.15)),

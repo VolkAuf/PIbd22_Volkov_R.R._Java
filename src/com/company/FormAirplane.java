@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class FormAirplane {
 
-    private JFrame frame;
+    private final JFrame frame;
     private DrawWindow drawPanel;
     private final JComboBox<String> list;
 
@@ -65,30 +65,22 @@ public class FormAirplane {
         try {
             String name = button.getName();
             switch (name) {
-                case "Up":
-                    drawPanel.getAir().MoveAirTransport(Direction.Up);
-                    break;
-                case "Down":
-                    drawPanel.getAir().MoveAirTransport(Direction.Down);
-                    break;
-                case "Left":
-                    drawPanel.getAir().MoveAirTransport(Direction.Left);
-                    break;
-                case "Right":
-                    drawPanel.getAir().MoveAirTransport(Direction.Right);
-                    break;
+                case "Up" -> drawPanel.getAirbus().MoveAirTransport(Direction.Up);
+                case "Down" -> drawPanel.getAirbus().MoveAirTransport(Direction.Down);
+                case "Left" -> drawPanel.getAirbus().MoveAirTransport(Direction.Left);
+                case "Right" -> drawPanel.getAirbus().MoveAirTransport(Direction.Right);
             }
             frame.repaint();
-        } catch (Exception e) {
+        } catch (Exception ignored) {
 
         }
     }
 
     private void setAir() {
-        drawPanel.setAir(new Airbus(225, 1500, Color.LIGHT_GRAY, Color.RED,
+        drawPanel.setAirbus(new Airbus(225, 1500, Color.LIGHT_GRAY, Color.RED,
                 (list.getSelectedIndex() + 1) * 10, true, true, true,
                 true, true));
-        drawPanel.getAir().SetPosition((int) (Math.random() * 100 + 100), (int) (Math.random() * 100 + 100),
+        drawPanel.getAirbus().SetPosition((int) (Math.random() * 100 + 100), (int) (Math.random() * 100 + 100),
                 1000, 470);
         frame.repaint();
     }

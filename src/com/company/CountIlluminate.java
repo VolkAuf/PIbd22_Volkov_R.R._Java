@@ -6,15 +6,11 @@ public enum CountIlluminate {
     thirty;
 
     public static CountIlluminate getCount(int N) {
-        switch (N) {
-            case 10:
-                return CountIlluminate.ten;
-            case 20:
-                return CountIlluminate.twenty;
-            case 30:
-                return CountIlluminate.thirty;
-            default:
-                return null;
-        }
+        return switch (N) {
+            case 10 -> CountIlluminate.ten;
+            case 20 -> CountIlluminate.twenty;
+            case 30 -> CountIlluminate.thirty;
+            default -> null;
+        };
     }
 }
