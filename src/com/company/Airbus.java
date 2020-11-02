@@ -22,9 +22,9 @@ public class Airbus extends Airplane {
         this.regulTail = regulTail;
 
         switch (addition) {
-            case 0 -> additions = new Illuminate(digit);
-            case 1 -> additions = new IlluminateOfType(digit);
-            case 2 -> additions = new MarketLine(digit);
+            case 0 -> additions = new SquareIlluminate(digit);
+            case 1 -> additions = new CircleIlluminate(digit);
+            case 2 -> additions = new ArcIlluminate(digit);
         }
 
     }

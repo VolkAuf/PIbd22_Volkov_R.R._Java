@@ -54,10 +54,9 @@ public class FormAirplane {
         buttonLeft.addActionListener(e -> setDirection(buttonLeft));
         buttonRight.addActionListener(e -> setDirection(buttonRight));
 
-        listOfAdditions = new JComboBox<>(new String[]{"Кол-во иллюминаторов", "Форма иллюминаторов", "Рекламная линия"});
+        listOfAdditions = new JComboBox<>(new String[]{"Квадратный", "Круглый", "Полукруглый"});
         frame.getContentPane().add(listOfAdditions);
         listOfAdditions.setBounds(110, 45, 90, 30);
-        listOfAdditions.addActionListener(e -> changeCounts());
 
         listOfCount = new JComboBox<>(new String[]{"10 Иллюминаторов", "20 Иллюминаторов", "30 Иллюминаторов"});
         frame.getContentPane().add(listOfCount);
@@ -102,22 +101,5 @@ public class FormAirplane {
         frame.repaint();
     }
 
-    private void changeCounts() {
-        listOfCount.removeAllItems();
-        switch (listOfAdditions.getSelectedIndex()) {
-            case 0 -> {
-                listOfCount.addItem("10 иллюминаторов");
-                listOfCount.addItem("20 иллюминаторов");
-                listOfCount.addItem("30 иллюминаторов");
-            }
-            case 1 -> {
-                listOfCount.addItem("Круглая форма");
-                listOfCount.addItem("Квадратная форма");
-            }
-            case 2 -> {
-                listOfCount.addItem("Одна");
-                listOfCount.addItem("Две");
-            }
-        }
-    }
+
 }
