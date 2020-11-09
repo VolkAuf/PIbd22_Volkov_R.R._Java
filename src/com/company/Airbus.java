@@ -26,7 +26,6 @@ public class Airbus extends Airplane {
             case 1 -> additions = new CircleIlluminate(digit);
             case 2 -> additions = new ArcIlluminate(digit);
         }
-
     }
 
     @Override

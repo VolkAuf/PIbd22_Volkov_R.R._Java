@@ -5,17 +5,17 @@ import java.awt.*;
 
 public class DrawWindow extends JPanel {
 
-    private ITramsport transport;
+    private ITransport transport;
 
     public void paintComponent(Graphics g) {
         if (transport != null) transport.DrawTransport(g);
     }
 
-    public void setTransport(ITramsport transport) {
+    public void setTransport(ITransport transport) {
         this.transport = transport;
     }
 
-    public ITramsport getTransport() {
+    public ITransport getTransport() {
         return transport;
     }
 }

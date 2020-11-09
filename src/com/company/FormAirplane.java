@@ -100,6 +100,4 @@ public class FormAirplane {
                 1000, 470);
         frame.repaint();
     }
-
-
 }

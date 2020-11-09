@@ -26,6 +26,7 @@ public class CircleIlluminate implements Additions {
                     (int) (y + airplaneHeight * marginY), (int) (airplaneWidth * 0.04),
                     (int) (airplaneWidth * 0.04));
         }
+
         if (countOfIlluminate == CountOfIlluminate.twenty || countOfIlluminate == CountOfIlluminate.thirty) {
             marginY -= 0.085;
             marginX -= 0.025;
@@ -35,6 +36,7 @@ public class CircleIlluminate implements Additions {
                         (int) (airplaneWidth * 0.04));
             }
         }
+
         if (countOfIlluminate == CountOfIlluminate.thirty) {
             marginY -= 0.085;
             marginX -= 0.025;

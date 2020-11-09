@@ -27,6 +27,7 @@ public class SquareIlluminate implements Additions {
                     (int) (airplaneWidth * 0.04));
 
         }
+
         if (countOfIlluminate == CountOfIlluminate.twenty || countOfIlluminate == CountOfIlluminate.thirty) {
             marginY -= 0.085;
             marginX -= 0.025;
@@ -36,6 +37,7 @@ public class SquareIlluminate implements Additions {
                         (int) (airplaneWidth * 0.04));
             }
         }
+
         if (countOfIlluminate == CountOfIlluminate.thirty) {
             marginY -= 0.085;
             marginX -= 0.025;

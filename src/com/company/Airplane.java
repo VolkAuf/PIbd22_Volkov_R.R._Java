@@ -168,7 +168,5 @@ public class Airplane extends AirTransport {
                         ((int) (_startPosY + airplaneHeight * 0.4))
                 };
         g.fillPolygon(pointTailX, pointTailY, 4);// Tail
-
     }
-
 }

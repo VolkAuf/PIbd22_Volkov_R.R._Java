@@ -2,7 +2,7 @@ package com.company;
 
 import java.awt.*;
 
-public abstract class AirTransport implements ITramsport {
+public abstract class AirTransport implements ITransport {
     protected float _startPosX;
     protected float _startPosY;
     protected int _pictureWidth;
@@ -36,8 +36,7 @@ public abstract class AirTransport implements ITramsport {
     }
 
     @Override
-    public void SetPosition(int x, int y, int width, int height)
-    {
+    public void SetPosition(int x, int y, int width, int height) {
         _startPosX = x;
         _startPosY = y;
         _pictureWidth = width;
@@ -46,6 +45,7 @@ public abstract class AirTransport implements ITramsport {
 
     @Override
     public abstract void MoveTransport(Direction direction);
+
     @Override
     public abstract void DrawTransport(Graphics g);
 }
