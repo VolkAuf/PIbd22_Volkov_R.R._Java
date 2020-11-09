@@ -5,19 +5,22 @@ import java.awt.*;
 
 public class DrawWindowAerodrome extends JPanel {
 
-    private final Aerodrome<Airplane, Additions> aerodrome;
+    private final AerodromeCollection aerodromeCollection;
+    private String selectedItem = null;
 
-    public DrawWindowAerodrome(Aerodrome<Airplane, Additions> aerodrome) {
-        this.aerodrome = aerodrome;
+    public DrawWindowAerodrome(AerodromeCollection aerodromeCollection) {
+        this.aerodromeCollection = aerodromeCollection;
     }
 
-    public Aerodrome<Airplane, Additions> gerAerodrome() {
-        return aerodrome;
+    public void setSelectedItem(String selectedItem) {
+        this.selectedItem = selectedItem;
     }
 
     @Override
     public void paintComponent(Graphics g) {
-        Graphics2D g2 = (Graphics2D) g;
-        if (aerodrome != null) aerodrome.Draw(g2);
+        if (selectedItem != null) {
+            Graphics2D g2 = (Graphics2D) g;
+            if (aerodromeCollection != null) aerodromeCollection.get(selectedItem).Draw(g2);
+        }
     }
 }
