@@ -3,7 +3,7 @@ package com.company;
 import javax.swing.*;
 import java.awt.*;
 
-public class DrawWindow extends JPanel {
+public class DrawWindowAirplane extends JPanel {
 
     private ITransport transport;
 

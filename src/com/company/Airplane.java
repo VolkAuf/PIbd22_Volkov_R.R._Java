@@ -4,18 +4,18 @@ import java.awt.*;
 
 public class Airplane extends AirTransport {
 
-    protected int airplaneWidth = 150;
-    protected int airplaneHeight = 80;
+    protected int airplaneWidth = 230;
+    protected int airplaneHeight = 130;
 
-    public Airplane(int maxSpeed, float weigth, Color mainColor) {
+    public Airplane(int maxSpeed, float weight, Color mainColor) {
         this.maxSpeed = maxSpeed;
-        weight = weigth;
+        this.weight = weight;
         this.mainColor = mainColor;
     }
 
-    protected Airplane(int maxSpeed, float weigth, Color mainColor, int airplaneWidth, int airplaneHeight) {
+    protected Airplane(int maxSpeed, float weight, Color mainColor, int airplaneWidth, int airplaneHeight) {
         this.maxSpeed = maxSpeed;
-        weight = weigth;
+        this.weight = weight;
         this.mainColor = mainColor;
         this.airplaneWidth = airplaneWidth;
         this.airplaneHeight = airplaneHeight;
@@ -162,10 +162,10 @@ public class Airplane extends AirTransport {
                 };
         int[] pointTailY =
                 {
-                        ((int) (_startPosY + airplaneHeight * 0.4)),
-                        ((int) (_startPosY + airplaneHeight * 0.03)),
-                        ((int) (_startPosY + airplaneHeight * 0.03)),
-                        ((int) (_startPosY + airplaneHeight * 0.4))
+                        ((int) (_startPosY + airplaneHeight * 0.5)),
+                        ((int) (_startPosY + airplaneHeight * 0.13)),
+                        ((int) (_startPosY + airplaneHeight * 0.13)),
+                        ((int) (_startPosY + airplaneHeight * 0.5))
                 };
         g.fillPolygon(pointTailX, pointTailY, 4);// Tail
     }

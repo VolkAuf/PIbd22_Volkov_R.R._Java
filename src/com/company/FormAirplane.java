@@ -6,14 +6,14 @@ import java.awt.*;
 public class FormAirplane {
 
     private final JFrame frame;
-    private DrawWindow drawWindow;
+    private DrawWindowAirplane drawWindowAirplane;
     private final JComboBox<String> listOfCount;
     private final JComboBox<String> listOfAdditions;
 
     public FormAirplane() {
         frame = new JFrame("Аэроплан");
         frame.setSize(1000, 500);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setVisible(true);
         frame.setResizable(false);
 
@@ -61,12 +61,17 @@ public class FormAirplane {
         listOfCount = new JComboBox<>(new String[]{"10 Иллюминаторов", "20 Иллюминаторов", "30 Иллюминаторов"});
         frame.getContentPane().add(listOfCount);
         listOfCount.setBounds(10, 45, 90, 30);
+
+        drawWindowAirplane = new DrawWindowAirplane();
+        frame.getContentPane().add(drawWindowAirplane);
+        drawWindowAirplane.setBounds(0, 0, 1000, 500);
+        frame.repaint();
     }
 
-    public void addDrawWindow(DrawWindow panel) {
-        drawWindow = panel;
-        frame.getContentPane().add(drawWindow);
-        drawWindow.setBounds(0, 0, 1000, 500);
+    public void addDrawWindow(DrawWindowAirplane panel) {
+        drawWindowAirplane = panel;
+        frame.getContentPane().add(drawWindowAirplane);
+        drawWindowAirplane.setBounds(0, 0, 1000, 500);
         frame.repaint();
     }
 
@@ -74,10 +79,10 @@ public class FormAirplane {
         try {
             String name = button.getName();
             switch (name) {
-                case "Up" -> drawWindow.getTransport().MoveTransport(Direction.Up);
-                case "Down" -> drawWindow.getTransport().MoveTransport(Direction.Down);
-                case "Left" -> drawWindow.getTransport().MoveTransport(Direction.Left);
-                case "Right" -> drawWindow.getTransport().MoveTransport(Direction.Right);
+                case "Up" -> drawWindowAirplane.getTransport().MoveTransport(Direction.Up);
+                case "Down" -> drawWindowAirplane.getTransport().MoveTransport(Direction.Down);
+                case "Left" -> drawWindowAirplane.getTransport().MoveTransport(Direction.Left);
+                case "Right" -> drawWindowAirplane.getTransport().MoveTransport(Direction.Right);
             }
             frame.repaint();
         } catch (Exception ignored) {
@@ -86,18 +91,25 @@ public class FormAirplane {
     }
 
     private void setAirplane() {
-        drawWindow.setTransport(new Airplane(225, 1500, Color.LIGHT_GRAY));
-        drawWindow.getTransport().SetPosition((int) (Math.random() * 100 + 100), (int) (Math.random() * 100 + 100),
+        drawWindowAirplane.setTransport(new Airplane(225, 1500, Color.LIGHT_GRAY));
+        drawWindowAirplane.getTransport().setPosition((int) (Math.random() * 100 + 100), (int) (Math.random() * 100 + 100),
                 1000, 470);
         frame.repaint();
     }
 
     private void setAirbus() {
-        drawWindow.setTransport(new Airbus(225, 1500, Color.LIGHT_GRAY, Color.RED,
-                (listOfCount.getSelectedIndex() + 1) * 10, true, true,
+        drawWindowAirplane.setTransport(new Airbus(225, 1500, Color.LIGHT_GRAY, Color.RED,
+                true, true,
                 true, true, listOfAdditions.getSelectedIndex(), listOfCount.getSelectedIndex()));
-        drawWindow.getTransport().SetPosition((int) (Math.random() * 100 + 100), (int) (Math.random() * 100 + 100),
+        drawWindowAirplane.getTransport().setPosition((int) (Math.random() * 100 + 100), (int) (Math.random() * 100 + 100),
                 1000, 470);
+        frame.repaint();
+    }
+
+    public void setAirTransport(AirTransport airTransport) {
+        airTransport.setPosition((int) (Math.random() * 100 + 100), (int) (Math.random() * 100 + 100),
+                1000, 470);
+        drawWindowAirplane.setTransport(airTransport);
         frame.repaint();
     }
 }
