@@ -36,9 +36,12 @@ public abstract class AirTransport implements ITransport {
     }
 
     @Override
-    public void SetPosition(int x, int y, int width, int height) {
-        _startPosX = x;
-        _startPosY = y;
+    public void setPosition(int x, int y, int width, int height) {
+        if (x >= 0 && x < width &&
+                y >= 0 && y < height) {
+            this._startPosX = x;
+            this._startPosY = y;
+        }
         _pictureWidth = width;
         _pictureHeight = height;
     }

@@ -11,10 +11,10 @@ public class Airbus extends Airplane {
     public boolean regulTail;
     private Additions additions;
 
-    public Airbus(int maxSpeed, float weight, Color mainColor, Color dopColor, int countIlluminate,
+    public Airbus(int maxSpeed, float weight, Color mainColor, Color dopColor,
                   boolean backTurbine, boolean sideTurbine, boolean marketLine, boolean regulTail,
                   int addition, int digit) {
-        super(maxSpeed, weight, mainColor, 150, 80);
+        super(maxSpeed, weight, mainColor, 230, 130);
         this.dopColor = dopColor;
         this.backTurbine = backTurbine;
         this.sideTurbine = sideTurbine;
@@ -34,7 +34,7 @@ public class Airbus extends Airplane {
         if (backTurbine) {
             g.fillOval((int) (_startPosX + airplaneWidth * 0.1), (int) (_startPosY + airplaneHeight * 0.4),
                     (int) (airplaneWidth * 0.2), (int) (airplaneHeight * 0.2));
-            g.setColor(Color.WHITE);
+            g.setColor(dopColor);
             g.drawLine((int) (_startPosX + airplaneWidth * 0.1), (int) (_startPosY + airplaneHeight * 0.5),
                     (int) (_startPosX + airplaneWidth * 0.3), (int) (_startPosY + airplaneHeight * 0.5));
             g.drawLine((int) (_startPosX + airplaneWidth * 0.2), (int) (_startPosY + airplaneHeight * 0.4),
@@ -44,7 +44,7 @@ public class Airbus extends Airplane {
             g.setColor(Color.BLACK);
             g.fillOval((int) (_startPosX + airplaneWidth * 0.4), (int) (_startPosY + airplaneHeight * 0.01),
                     (int) (airplaneWidth * 0.1), (int) (airplaneHeight * 0.1));
-            g.setColor(Color.WHITE);
+            g.setColor(dopColor);
             g.drawLine((int) (_startPosX + airplaneWidth * 0.4), (int) (_startPosY + airplaneHeight * 0.06),
                     (int) (_startPosX + airplaneWidth * 0.5), (int) (_startPosY + airplaneHeight * 0.06));
             g.drawLine((int) (_startPosX + airplaneWidth * 0.45), (int) (_startPosY + airplaneHeight * 0.01),
@@ -52,7 +52,7 @@ public class Airbus extends Airplane {
             g.setColor(Color.BLACK);
             g.fillOval((int) (_startPosX + airplaneWidth * 0.4), (int) (_startPosY + airplaneHeight * 0.87),
                     (int) (airplaneWidth * 0.1), (int) (airplaneHeight * 0.1));
-            g.setColor(Color.WHITE);
+            g.setColor(dopColor);
             g.drawLine((int) (_startPosX + airplaneWidth * 0.4), (int) (_startPosY + airplaneHeight * 0.92),
                     (int) (_startPosX + airplaneWidth * 0.5), (int) (_startPosY + airplaneHeight * 0.92));
             g.drawLine((int) (_startPosX + airplaneWidth * 0.45), (int) (_startPosY + airplaneHeight * 0.87),
@@ -61,28 +61,29 @@ public class Airbus extends Airplane {
 
         super.DrawTransport(g);
 
+        g.setColor(dopColor);
         if (regulTail) {
             int[] pointSportTailX =
                     {
-                            ((int) (_startPosX + airplaneWidth * 0.18)),
+                            ((int) (_startPosX + airplaneWidth * 0.08)),
+                            ((int) (_startPosX + airplaneWidth * 0.0)),
+                            ((int) (_startPosX + airplaneWidth * 0.03)),
                             ((int) (_startPosX + airplaneWidth * 0.1)),
-                            ((int) (_startPosX + airplaneWidth * 0.13)),
-                            ((int) (_startPosX + airplaneWidth * 0.2)),
+                            ((int) (_startPosX + airplaneWidth * 0.15)),
                             ((int) (_startPosX + airplaneWidth * 0.25)),
-                            ((int) (_startPosX + airplaneWidth * 0.35)),
-                            ((int) (_startPosX + airplaneWidth * 0.33)),
-                            ((int) (_startPosX + airplaneWidth * 0.23))
+                            ((int) (_startPosX + airplaneWidth * 0.23)),
+                            ((int) (_startPosX + airplaneWidth * 0.13))
                     };
             int[] pointSportTailY =
                     {
-                            ((int) (_startPosY + airplaneHeight * 0.19)),
-                            ((int) (_startPosY + airplaneHeight * 0.21)),
-                            ((int) (_startPosY + airplaneHeight * 0.24)),
-                            ((int) (_startPosY + airplaneHeight * 0.28)),
-                            ((int) (_startPosY + airplaneHeight * 0.26)),
-                            ((int) (_startPosY + airplaneHeight * 0.2)),
-                            ((int) (_startPosY + airplaneHeight * 0.17)),
-                            ((int) (_startPosY + airplaneHeight * 0.19))
+                            ((int) (_startPosY + airplaneHeight * 0.09)),
+                            ((int) (_startPosY + airplaneHeight * 0.11)),
+                            ((int) (_startPosY + airplaneHeight * 0.14)),
+                            ((int) (_startPosY + airplaneHeight * 0.18)),
+                            ((int) (_startPosY + airplaneHeight * 0.16)),
+                            ((int) (_startPosY + airplaneHeight * 0.1)),
+                            ((int) (_startPosY + airplaneHeight * 0.07)),
+                            ((int) (_startPosY + airplaneHeight * 0.09))
                     };
             g.fillPolygon(pointSportTailX, pointSportTailY, 8);// STail
         }
@@ -105,7 +106,7 @@ public class Airbus extends Airplane {
                 };
 
         g.fillPolygon(pointSecondFloorX, pointSecondFloorY, 4);// Korpus
-        g.setColor(Color.BLACK);
+        g.setColor(dopColor);
 
         //Door
         g.drawLine((int) (_startPosX + airplaneWidth * 0.72), (int) (_startPosY + airplaneHeight * 0.47),
@@ -116,7 +117,6 @@ public class Airbus extends Airplane {
                 (int) (_startPosX + airplaneWidth * 0.75), (int) (_startPosY + airplaneHeight * 0.47));
         g.drawLine((int) (_startPosX + airplaneWidth * 0.75), (int) (_startPosY + airplaneHeight * 0.47),
                 (int) (_startPosX + airplaneWidth * 0.72), (int) (_startPosY + airplaneHeight * 0.47));
-        g.setColor(Color.WHITE);
 
         additions.DrawEntity(g, dopColor, _startPosX, _startPosY, airplaneWidth, airplaneHeight);
     }
