@@ -37,7 +37,7 @@ public class FormAerodrome {
         JPanel groupboxTakeIt = new JPanel();
         Border mainBorder = BorderFactory.createTitledBorder("Take AirTransport");
         groupboxTakeIt.setBorder(mainBorder);
-        JLabel labelPlaceNumber = new JLabel("Place Number");
+        JLabel labelPlaceNumber = new JLabel("Place Number!");
         fieldTakeIndex = new JFormattedTextField();
         JButton buttonTakeInLinkedList = new JButton("Take in list");
         JButton buttonGetFromLinkedList = new JButton("Get from List");
