@@ -5,17 +5,17 @@ import java.awt.*;
 
 public class DrawWindow extends JPanel {
 
-    private Airbus airbus;
+    private ITransport transport;
 
     public void paintComponent(Graphics g) {
-        if (airbus != null) airbus.DrawTransport(g);
+        if (transport != null) transport.DrawTransport(g);
     }
 
-    public void setAirbus(Airbus airbus) {
-        this.airbus = airbus;
+    public void setTransport(ITransport transport) {
+        this.transport = transport;
     }
 
-    public Airbus getAirbus() {
-        return airbus;
+    public ITransport getTransport() {
+        return transport;
     }
 }
