@@ -150,7 +150,7 @@ public class Airplane extends AirTransport {
                         ((int) (_startPosY + airplaneHeight * 0.47)),
                         ((int) (_startPosY + airplaneHeight * 0.63))
                 };
-        g.fillPolygon(pointBamperX, pointBamperY, 4);// bamper
+        g.fillPolygon(pointBamperX, pointBamperY, 4);// Bamper
         g.setColor(mainColor);
 
         int[] pointTailX =
