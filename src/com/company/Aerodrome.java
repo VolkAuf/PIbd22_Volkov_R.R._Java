@@ -92,4 +92,8 @@ public class Aerodrome<T extends AirTransport, I extends Additions> {
         }
         return null;
     }
+
+    public void clear() {
+        places.clear();
+    }
 }

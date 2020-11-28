@@ -48,4 +48,9 @@ public class SquareIlluminate implements Additions {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName() + '.' + countOfIlluminate.ordinal();
+    }
 }
