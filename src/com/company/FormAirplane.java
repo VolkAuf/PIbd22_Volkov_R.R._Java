@@ -54,12 +54,10 @@ public class FormAirplane {
         buttonLeft.addActionListener(e -> setDirection(buttonLeft));
         buttonRight.addActionListener(e -> setDirection(buttonRight));
 
-        listOfAdditions = new JComboBox<>(new String[]{"Квадратный", "Круглый", "Полукруглый"});
-        frame.getContentPane().add(listOfAdditions);
+        listOfAdditions = new JComboBox<>(new String[]{"Square", "Circle", "Arc"});
         listOfAdditions.setBounds(110, 45, 90, 30);
 
-        listOfCount = new JComboBox<>(new String[]{"10 Иллюминаторов", "20 Иллюминаторов", "30 Иллюминаторов"});
-        frame.getContentPane().add(listOfCount);
+        listOfCount = new JComboBox<>(new String[]{"10 Illuminate", "20 Illuminate", "30 Illuminate"});
         listOfCount.setBounds(10, 45, 90, 30);
 
         drawWindowAirplane = new DrawWindowAirplane();
@@ -68,10 +66,10 @@ public class FormAirplane {
         frame.repaint();
     }
 
-    public void addDrawWindow(DrawWindowAirplane panel) {
-        drawWindowAirplane = panel;
-        frame.getContentPane().add(drawWindowAirplane);
-        drawWindowAirplane.setBounds(0, 0, 1000, 500);
+    public void addDrawWindow(DrawWindowAirplane drawWindowAirplane) {
+        this.drawWindowAirplane = drawWindowAirplane;
+        frame.getContentPane().add(this.drawWindowAirplane);
+        this.drawWindowAirplane.setBounds(0, 0, 1000, 500);
         frame.repaint();
     }
 
@@ -99,8 +97,7 @@ public class FormAirplane {
 
     private void setAirbus() {
         drawWindowAirplane.setTransport(new Airbus(225, 1500, Color.LIGHT_GRAY, Color.RED,
-                true, true,
-                true, true, listOfAdditions.getSelectedIndex(), listOfCount.getSelectedIndex()));
+                true, true, true, true));
         drawWindowAirplane.getTransport().setPosition((int) (Math.random() * 100 + 100), (int) (Math.random() * 100 + 100),
                 1000, 470);
         frame.repaint();

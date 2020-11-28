@@ -11,21 +11,58 @@ public class Airbus extends Airplane {
     public boolean regulTail;
     private Additions additions;
 
+    public Color getDopColor() {
+        return dopColor;
+    }
+
+    public void setDopColor(Color dopColor) {
+        this.dopColor = dopColor;
+    }
+
+    public boolean isBackTurbine() {
+        return backTurbine;
+    }
+
+    public void setBackTurbine(boolean backTurbine) {
+        this.backTurbine = backTurbine;
+    }
+
+    public boolean isSideTurbine() {
+        return sideTurbine;
+    }
+
+    public void setSideTurbine(boolean sideTurbine) {
+        this.sideTurbine = sideTurbine;
+    }
+
+    public boolean isMarketLine() {
+        return marketLine;
+    }
+
+    public void setMarketLine(boolean marketLine) {
+        this.marketLine = marketLine;
+    }
+
+    public boolean isRegulTail() {
+        return regulTail;
+    }
+
+    public void setRegulTail(boolean regulTail) {
+        this.regulTail = regulTail;
+    }
+
+    public void setAdditions(Additions additions) {
+        this.additions = additions;
+    }
+
     public Airbus(int maxSpeed, float weight, Color mainColor, Color dopColor,
-                  boolean backTurbine, boolean sideTurbine, boolean marketLine, boolean regulTail,
-                  int addition, int digit) {
+                  boolean backTurbine, boolean sideTurbine, boolean marketLine, boolean regulTail) {
         super(maxSpeed, weight, mainColor, 230, 130);
         this.dopColor = dopColor;
         this.backTurbine = backTurbine;
         this.sideTurbine = sideTurbine;
         this.marketLine = marketLine;
         this.regulTail = regulTail;
-
-        switch (addition) {
-            case 0 -> additions = new SquareIlluminate(digit);
-            case 1 -> additions = new CircleIlluminate(digit);
-            case 2 -> additions = new ArcIlluminate(digit);
-        }
     }
 
     @Override
@@ -118,7 +155,9 @@ public class Airbus extends Airplane {
         g.drawLine((int) (_startPosX + airplaneWidth * 0.75), (int) (_startPosY + airplaneHeight * 0.47),
                 (int) (_startPosX + airplaneWidth * 0.72), (int) (_startPosY + airplaneHeight * 0.47));
 
-        additions.DrawEntity(g, dopColor, _startPosX, _startPosY, airplaneWidth, airplaneHeight);
+        if (additions != null) {
+            additions.DrawEntity(g, getDopColor(), _startPosX, _startPosY, airplaneWidth, airplaneHeight);
+        }
     }
 }
 
