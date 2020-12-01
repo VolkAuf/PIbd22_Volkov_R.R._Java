@@ -65,10 +65,9 @@ public class Airbus extends Airplane {
         this.regulTail = regulTail;
     }
 
-    public Airbus(String info){
+    public Airbus(String info) {
         String[] args = info.split(separator);
-        if (args.length == 9)
-        {
+        if (args.length == 9) {
             maxSpeed = Integer.parseInt(args[0]);
             weight = Float.parseFloat(args[1]);
             mainColor = new Color(Integer.parseInt(args[2]));
@@ -170,6 +169,24 @@ public class Airbus extends Airplane {
 
         g.fillPolygon(pointSecondFloorX, pointSecondFloorY, 4);// Korpus
         g.setColor(dopColor);
+
+        if (marketLine) {
+            int[] pointMarketLineX =
+                    {
+                            ((int) (_startPosX + airplaneWidth * 0.1)),
+                            ((int) (_startPosX + airplaneWidth * 0.74)),
+                            ((int) (_startPosX + airplaneWidth * 0.9)),
+                            ((int) (_startPosX + airplaneWidth * 0.27))
+                    };
+            int[] pointMarketLineY =
+                    {
+                            ((int) (_startPosY + airplaneHeight * 0.33)),
+                            ((int) (_startPosY + airplaneHeight * 0.63)),
+                            ((int) (_startPosY + airplaneHeight * 0.63)),
+                            ((int) (_startPosY + airplaneHeight * 0.33))
+                    };
+            g.fillPolygon(pointMarketLineX, pointMarketLineY, 4);// MLine
+        }
 
         //Door
         g.drawLine((int) (_startPosX + airplaneWidth * 0.72), (int) (_startPosY + airplaneHeight * 0.47),
