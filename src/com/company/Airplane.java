@@ -6,6 +6,7 @@ public class Airplane extends AirTransport {
 
     protected int airplaneWidth = 230;
     protected int airplaneHeight = 130;
+    protected String separator = ";";
 
     public Airplane(int maxSpeed, float weight, Color mainColor) {
         this.maxSpeed = maxSpeed;
@@ -19,6 +20,18 @@ public class Airplane extends AirTransport {
         this.mainColor = mainColor;
         this.airplaneWidth = airplaneWidth;
         this.airplaneHeight = airplaneHeight;
+    }
+
+    public Airplane(String info) {
+        String[] args = info.split(separator);
+        if (args.length == 3) {
+            maxSpeed = Integer.parseInt(args[0]);
+            weight = Float.parseFloat(args[1]);
+            mainColor = new Color(Integer.parseInt(args[2]));
+        }
+    }
+
+    public Airplane() {
     }
 
     @Override
@@ -168,5 +181,10 @@ public class Airplane extends AirTransport {
                         ((int) (_startPosY + airplaneHeight * 0.5))
                 };
         g.fillPolygon(pointTailX, pointTailY, 4);// Tail
+    }
+
+    @Override
+    public String toString() {
+        return maxSpeed + separator + weight + separator + mainColor.getRGB();
     }
 }

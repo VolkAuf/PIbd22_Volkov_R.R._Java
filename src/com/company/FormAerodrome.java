@@ -2,6 +2,7 @@ package com.company;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -59,7 +60,6 @@ public class FormAerodrome {
         groupboxTakeIt.add(buttonTakeInLinkedList);
         groupboxTakeIt.add(buttonGetFromLinkedList);
         groupboxTakeIt.add(labelPlaceNumber);
-        groupboxTakeIt.add(fieldTakeIndex);
         frame.getContentPane().add(groupboxTakeIt);
 
         groupboxAerodrome.add(labelAerodromeName);
@@ -70,16 +70,16 @@ public class FormAerodrome {
         frame.getContentPane().add(groupboxAerodrome);
 
         drawWindowAerodrome.setBounds(0, 0, 650, 550);
-        buttonCreateAirTransport.setBounds(570, 320, 200, 60);
+        buttonCreateAirTransport.setBounds(570, 305, 200, 60);
 
-        groupboxTakeIt.setBounds(570, 400, 200, 150);
+        groupboxTakeIt.setBounds(570, 370, 200, 150);
         groupboxTakeIt.setLayout(null);
         labelPlaceNumber.setBounds(20, 20, 85, 30);
         fieldTakeIndex.setBounds(105, 20, 75, 30);
         buttonTakeInLinkedList.setBounds(20, 60, 160, 30);
         buttonGetFromLinkedList.setBounds(20, 95, 160, 30);
 
-        groupboxAerodrome.setBounds(570, 5, 200, 300);
+        groupboxAerodrome.setBounds(570, 0, 200, 300);
         groupboxAerodrome.setLayout(null);
         labelAerodromeName.setBounds(20, 20, 85, 30);
         fieldAerodromeName.setBounds(105, 20, 75, 30);
@@ -93,6 +93,25 @@ public class FormAerodrome {
         buttonCreateAerodrome.addActionListener(e -> addAerodrome());
         buttonDeleteAerodrome.addActionListener(e -> deleteAerodrome());
         listBoxAerodrome.addListSelectionListener(e -> listListener());
+
+        JMenuBar menuBar = new JMenuBar();
+        frame.setJMenuBar(menuBar);
+        JMenu fileMenu = new JMenu("File");
+        JMenuItem fileItemSave = new JMenuItem("Save");
+        fileItemSave.addActionListener(e -> saveFile());
+        JMenuItem fileItemLoad = new JMenuItem("Download");
+        fileItemLoad.addActionListener(e -> loadFile());
+        JMenu menuAerodrome = new JMenu("Aerodrome");
+        JMenuItem aerodromeItemSave = new JMenuItem("Save Aerodrome");
+        aerodromeItemSave.addActionListener(e -> saveAerodrome());
+        JMenuItem aerodromeItemLoad = new JMenuItem("Download Aerodrome");
+        aerodromeItemLoad.addActionListener(e -> loadAerodrome());
+        fileMenu.add(fileItemSave);
+        fileMenu.add(fileItemLoad);
+        menuAerodrome.add(aerodromeItemSave);
+        menuAerodrome.add(aerodromeItemLoad);
+        menuBar.add(fileMenu);
+        menuBar.add(menuAerodrome);
 
         frame.repaint();
     }
@@ -214,7 +233,8 @@ public class FormAerodrome {
 
     private void deleteAerodrome() {
         if (listBoxAerodrome.getSelectedIndex() >= 0) {
-            int result = JOptionPane.showConfirmDialog(frame, "Delete aerodrome " + listBoxAerodrome.getSelectedValue() + "?", "Deleted",
+            int result = JOptionPane.showConfirmDialog(frame, "Delete aerodrome "
+                            + listBoxAerodrome.getSelectedValue() + "?", "Deleted",
                     JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
                 aerodromeCollection.deleteAerodrome(listBoxAerodrome.getSelectedValue());
@@ -222,12 +242,73 @@ public class FormAerodrome {
                 frame.repaint();
             }
         } else {
-            JOptionPane.showMessageDialog(frame, "Selected aerodrome!!!", "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Selected aerodrome!!!", "Error",
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 
     private void listListener() {
         drawWindowAerodrome.setSelectedItem(listBoxAerodrome.getSelectedValue());
         frame.repaint();
+    }
+
+    private void saveFile() {
+        JFileChooser fileSaveDialog = new JFileChooser();
+        fileSaveDialog.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
+        int result = fileSaveDialog.showSaveDialog(frame);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            if (aerodromeCollection.saveFile(fileSaveDialog.getSelectedFile().getPath())) {
+                JOptionPane.showMessageDialog(frame, "Save complete", "Result", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(frame, "Save not complete", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void loadFile() {
+        JFileChooser fileOpenDialog = new JFileChooser();
+        fileOpenDialog.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
+        int result = fileOpenDialog.showOpenDialog(frame);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            if (aerodromeCollection.loadFile(fileOpenDialog.getSelectedFile().getPath())) {
+                JOptionPane.showMessageDialog(frame, "Load complete", "Result", JOptionPane.INFORMATION_MESSAGE);
+                reloadLevels();
+                frame.repaint();
+            } else {
+                JOptionPane.showMessageDialog(frame, "Load not complete", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void saveAerodrome() {
+        JFileChooser fileSaveDialog = new JFileChooser();
+        fileSaveDialog.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
+        if (listBoxAerodrome.getSelectedValue() == null) {
+            JOptionPane.showMessageDialog(frame, "Change aerodrome", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        int result = fileSaveDialog.showSaveDialog(frame);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            if (aerodromeCollection.saveAerodrome(fileSaveDialog.getSelectedFile().getPath(), listBoxAerodrome.getSelectedValue())) {
+                JOptionPane.showMessageDialog(frame, "File saved", "Result", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(frame, "File not saved", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+
+    private void loadAerodrome() {
+        JFileChooser fileOpenDialog = new JFileChooser();
+        fileOpenDialog.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
+        int result = fileOpenDialog.showOpenDialog(frame);
+        if (result == JFileChooser.APPROVE_OPTION) {
+            if (aerodromeCollection.loadAerodrome(fileOpenDialog.getSelectedFile().getPath())) {
+                JOptionPane.showMessageDialog(frame, "Download complete", "Result", JOptionPane.INFORMATION_MESSAGE);
+                reloadLevels();
+                frame.repaint();
+            } else {
+                JOptionPane.showMessageDialog(frame, "Download not complete", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }
 }

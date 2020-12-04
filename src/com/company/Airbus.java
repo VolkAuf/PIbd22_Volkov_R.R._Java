@@ -65,6 +65,31 @@ public class Airbus extends Airplane {
         this.regulTail = regulTail;
     }
 
+    public Airbus(String info) {
+        String[] args = info.split(separator);
+        if (args.length == 9) {
+            maxSpeed = Integer.parseInt(args[0]);
+            weight = Float.parseFloat(args[1]);
+            mainColor = new Color(Integer.parseInt(args[2]));
+            dopColor = new Color(Integer.parseInt(args[3]));
+            backTurbine = Boolean.parseBoolean(args[4]);
+            sideTurbine = Boolean.parseBoolean(args[5]);
+            marketLine = Boolean.parseBoolean(args[6]);
+            regulTail = Boolean.parseBoolean(args[7]);
+            if (args[8].contains("null")) {
+                additions = null;
+            } else {
+                String[] argsAddition = args[8].split("\\.");
+                int digit = Integer.parseInt(argsAddition[1]);
+                switch (argsAddition[0]) {
+                    case "SquareIlluminate" -> additions = new SquareIlluminate(digit);
+                    case "CircleIlluminate" -> additions = new CircleIlluminate(digit);
+                    case "ArcIlluminate" -> additions = new ArcIlluminate(digit);
+                }
+            }
+        }
+    }
+
     @Override
     public void DrawTransport(Graphics g) {
         g.setColor(Color.BLACK);
@@ -145,6 +170,24 @@ public class Airbus extends Airplane {
         g.fillPolygon(pointSecondFloorX, pointSecondFloorY, 4);// Korpus
         g.setColor(dopColor);
 
+        if (marketLine) {
+            int[] pointMarketLineX =
+                    {
+                            ((int) (_startPosX + airplaneWidth * 0.1)),
+                            ((int) (_startPosX + airplaneWidth * 0.74)),
+                            ((int) (_startPosX + airplaneWidth * 0.9)),
+                            ((int) (_startPosX + airplaneWidth * 0.27))
+                    };
+            int[] pointMarketLineY =
+                    {
+                            ((int) (_startPosY + airplaneHeight * 0.33)),
+                            ((int) (_startPosY + airplaneHeight * 0.63)),
+                            ((int) (_startPosY + airplaneHeight * 0.63)),
+                            ((int) (_startPosY + airplaneHeight * 0.33))
+                    };
+            g.fillPolygon(pointMarketLineX, pointMarketLineY, 4);// MLine
+        }
+
         //Door
         g.drawLine((int) (_startPosX + airplaneWidth * 0.72), (int) (_startPosY + airplaneHeight * 0.47),
                 (int) (_startPosX + airplaneWidth * 0.72), (int) (_startPosY + airplaneHeight * 0.37));
@@ -158,6 +201,12 @@ public class Airbus extends Airplane {
         if (additions != null) {
             additions.DrawEntity(g, getDopColor(), _startPosX, _startPosY, airplaneWidth, airplaneHeight);
         }
+    }
+
+    @Override
+    public String toString() {
+        return maxSpeed + separator + weight + separator + mainColor.getRGB() + separator + dopColor.getRGB() + separator
+                + backTurbine + separator + sideTurbine + separator + marketLine + separator + regulTail + separator + additions;
     }
 }
 

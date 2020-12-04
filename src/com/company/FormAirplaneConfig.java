@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public class FormAirplaneConfig extends JDialog {
+
     private Airplane airplane;
     private Color colorAirplane;
     private Additions additionsAirplane;
@@ -16,6 +17,7 @@ public class FormAirplaneConfig extends JDialog {
 
     public FormAirplaneConfig(Frame owner) {
         super(owner, true);
+
         setSize(800, 500);
         setLayout(null);
         setTitle("Airplane config");
@@ -164,17 +166,18 @@ public class FormAirplaneConfig extends JDialog {
             @Override
             public void mouseReleased(MouseEvent e) {
                 if (drawWindowAirplane.getTransport() != null) {
-                    if (e.getX() + ((JComponent) e.getSource()).getX() >= labelMainColor.getX() &&
-                            e.getX() + ((JComponent) e.getSource()).getX() <= labelMainColor.getX() + labelMainColor.getWidth() &&
-                            e.getY() + ((JComponent) e.getSource()).getY() >= labelMainColor.getY() &&
-                            e.getY() + ((JComponent) e.getSource()).getY() <= labelMainColor.getY() + labelMainColor.getHeight()) {
+                    if (e.getX() + ((JComponent) e.getSource()).getX() >= labelMainColor.getX() && e.getX()
+                            + ((JComponent) e.getSource()).getX() <= labelMainColor.getX()
+                            + labelMainColor.getWidth() && e.getY() + ((JComponent) e.getSource()).getY()
+                            >= labelMainColor.getY() && e.getY() + ((JComponent) e.getSource()).getY()
+                            <= labelMainColor.getY() + labelMainColor.getHeight()) {
                         drawWindowAirplane.getTransport().setMainColor(colorAirplane);
                         repaint();
-                    } else if (e.getX() + ((JComponent) e.getSource()).getX() >= labelDopColor.getX() &&
-                            e.getX() + ((JComponent) e.getSource()).getX() <= labelDopColor.getX() + labelDopColor.getWidth() &&
+                    } else if (e.getX() + ((JComponent) e.getSource()).getX() >= labelDopColor.getX() && e.getX()
+                            + ((JComponent) e.getSource()).getX() <= labelDopColor.getX() + labelDopColor.getWidth() &&
                             e.getY() + ((JComponent) e.getSource()).getY() >= labelDopColor.getY() &&
-                            e.getY() + ((JComponent) e.getSource()).getY() <= labelDopColor.getY() + labelDopColor.getHeight() &&
-                            drawWindowAirplane.getTransport() instanceof Airbus) {
+                            e.getY() + ((JComponent) e.getSource()).getY() <= labelDopColor.getY() +
+                                    labelDopColor.getHeight() && drawWindowAirplane.getTransport() instanceof Airbus) {
                         Airbus airbus = (Airbus) drawWindowAirplane.getTransport();
                         airbus.setDopColor(colorAirplane);
                         repaint();
@@ -216,52 +219,52 @@ public class FormAirplaneConfig extends JDialog {
         labelDopColor.addMouseListener(listenerColorLabel);
 
         JPanel panelRed = new JPanel();
-        panelRed.setBackground(new Color(255, 0, 51));
+        panelRed.setBackground(Color.red);
         panelRed.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         panelRed.setBounds(10, 15, 40, 40);
         panelRed.addMouseListener(listenerColor);
 
         JPanel panelGreen = new JPanel();
-        panelGreen.setBackground(new Color(102, 204, 0));
+        panelGreen.setBackground(Color.green);
         panelGreen.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         panelGreen.setBounds(65, 15, 40, 40);
         panelGreen.addMouseListener(listenerColor);
 
         JPanel panelBlue = new JPanel();
-        panelBlue.setBackground(new Color(51, 102, 204));
+        panelBlue.setBackground(Color.blue);
         panelBlue.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         panelBlue.setBounds(120, 15, 40, 40);
         panelBlue.addMouseListener(listenerColor);
 
         JPanel panelWhite = new JPanel();
-        panelWhite.setBackground(Color.WHITE);
+        panelWhite.setBackground(Color.white);
         panelWhite.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         panelWhite.setBounds(175, 15, 40, 40);
         panelWhite.addMouseListener(listenerColor);
 
         JPanel panelBlack = new JPanel();
-        panelBlack.setBackground(new Color(44, 44, 44));
+        panelBlack.setBackground(Color.black);
         panelBlack.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         panelBlack.setBounds(10, 60, 40, 40);
         panelBlack.addMouseListener(listenerColor);
 
         JPanel panelGray = new JPanel();
-        panelGray.setBackground(new Color(204, 204, 204));
+        panelGray.setBackground(Color.gray);
         panelGray.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
         panelGray.setBounds(65, 60, 40, 40);
         panelGray.addMouseListener(listenerColor);
 
-        JPanel panelPurple = new JPanel();
-        panelPurple.setBackground(new Color(255, 0, 153));
-        panelPurple.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        panelPurple.setBounds(120, 60, 40, 40);
-        panelPurple.addMouseListener(listenerColor);
-
         JPanel panelPink = new JPanel();
-        panelPink.setBackground(new Color(255, 102, 102));
+        panelPink.setBackground(Color.pink);
         panelPink.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
-        panelPink.setBounds(175, 60, 40, 40);
+        panelPink.setBounds(120, 60, 40, 40);
         panelPink.addMouseListener(listenerColor);
+
+        JPanel panelOrange = new JPanel();
+        panelOrange.setBackground(Color.orange);
+        panelOrange.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+        panelOrange.setBounds(175, 60, 40, 40);
+        panelOrange.addMouseListener(listenerColor);
 
         panelColors.setBounds(540, 5, 225, 210);
         add(panelColors);
@@ -271,8 +274,8 @@ public class FormAirplaneConfig extends JDialog {
         panelColors.add(panelBlue);
         panelColors.add(panelGray);
         panelColors.add(panelGreen);
+        panelColors.add(panelOrange);
         panelColors.add(panelPink);
-        panelColors.add(panelPurple);
         panelColors.add(panelRed);
         panelColors.add(panelWhite);
 
