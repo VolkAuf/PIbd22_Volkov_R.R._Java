@@ -111,23 +111,25 @@ public class AerodromeCollection {
         if (!filename.contains(".txt")) {
             filename += ".txt";
         }
-        try (FileWriter fileWriter = new FileWriter(filename, false)) {
-            if (aerodromeStages.containsKey(key))
+        if (aerodromeStages.containsKey(key)) {
+            try (FileWriter fileWriter = new FileWriter(filename, false)) {
                 fileWriter.write("Aerodrome" + separator + key + '\n');
 
-            Airplane airplane;
-            for (int i = 0; (airplane = aerodromeStages.get(key).get(i)) != null; i++) {
-                if (airplane.getClass().getSimpleName().equals("Airplane")) {
-                    fileWriter.write("Airplane" + separator);
-                } else if (airplane.getClass().getSimpleName().equals("Airbus")) {
-                    fileWriter.write("Airbus" + separator);
+                Airplane airplane;
+                for (int i = 0; (airplane = aerodromeStages.get(key).get(i)) != null; i++) {
+                    if (airplane.getClass().getSimpleName().equals("Airplane")) {
+                        fileWriter.write("Airplane" + separator);
+                    } else if (airplane.getClass().getSimpleName().equals("Airbus")) {
+                        fileWriter.write("Airbus" + separator);
+                    }
+                    fileWriter.write(airplane.toString() + '\n');
                 }
-                fileWriter.write(airplane.toString() + '\n');
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            return true;
         }
-        return true;
+        return false;
     }
 
     public boolean loadAerodrome(String filename) {
