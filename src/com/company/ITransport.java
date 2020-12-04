@@ -8,4 +8,6 @@ public interface ITransport {
     void MoveTransport(Direction direction);
 
     void DrawTransport(Graphics g);
+
+    void setMainColor(Color color);
 }

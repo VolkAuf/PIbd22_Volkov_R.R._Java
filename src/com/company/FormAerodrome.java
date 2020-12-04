@@ -20,7 +20,7 @@ public class FormAerodrome {
     public FormAerodrome() {
 
         airplaneLinkedList = new LinkedList<>();
-        frame = new JFrame("Аэродром");
+        frame = new JFrame("Aerodrome");
         frame.setSize(820, 600);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setVisible(true);
@@ -31,8 +31,7 @@ public class FormAerodrome {
 
         drawWindowAerodrome = new DrawWindowAerodrome(aerodromeCollection);
 
-        JButton buttonCreateAirplane = new JButton("Airplane");
-        JButton buttonCreateAirbus = new JButton("Airbus");
+        JButton buttonCreateAirTransport = new JButton("AirTransport");
 
         JPanel groupboxTakeIt = new JPanel();
         Border mainBorder = BorderFactory.createTitledBorder("Take AirTransport");
@@ -52,8 +51,7 @@ public class FormAerodrome {
         JButton buttonCreateAerodrome = new JButton("Create aerodrome");
         JButton buttonDeleteAerodrome = new JButton("Delete aerodrome");
 
-        frame.getContentPane().add(buttonCreateAirbus);
-        frame.getContentPane().add(buttonCreateAirplane);
+        frame.getContentPane().add(buttonCreateAirTransport);
         frame.getContentPane().add(buttonTakeInLinkedList);
         frame.getContentPane().add(drawWindowAerodrome);
 
@@ -72,8 +70,7 @@ public class FormAerodrome {
         frame.getContentPane().add(groupboxAerodrome);
 
         drawWindowAerodrome.setBounds(0, 0, 650, 550);
-        buttonCreateAirplane.setBounds(570, 320, 200, 30);
-        buttonCreateAirbus.setBounds(570, 360, 200, 30);
+        buttonCreateAirTransport.setBounds(570, 320, 200, 60);
 
         groupboxTakeIt.setBounds(570, 400, 200, 150);
         groupboxTakeIt.setLayout(null);
@@ -90,8 +87,7 @@ public class FormAerodrome {
         buttonDeleteAerodrome.setBounds(20, 95, 160, 30);
         listBoxAerodrome.setBounds(20, 140, 160, 150);
 
-        buttonCreateAirplane.addActionListener(e -> setAirplane());
-        buttonCreateAirbus.addActionListener(e -> setAirbus());
+        buttonCreateAirTransport.addActionListener(e -> setAirTransport());
         buttonTakeInLinkedList.addActionListener(e -> takeAirplane());
         buttonGetFromLinkedList.addActionListener(e -> moveToFrame());
         buttonCreateAerodrome.addActionListener(e -> addAerodrome());
@@ -99,6 +95,25 @@ public class FormAerodrome {
         listBoxAerodrome.addListSelectionListener(e -> listListener());
 
         frame.repaint();
+    }
+
+    private void setAirTransport() {
+        if (listBoxAerodrome.getSelectedIndex() >= 0) {
+            FormAirplaneConfig formAirplaneConfig = new FormAirplaneConfig(frame);
+            Airplane airplane = formAirplaneConfig.getAirplane();
+
+            if (airplane != null) {
+                if (aerodromeCollection.get(listBoxAerodrome.getSelectedValue()).plus(airplane)) {
+                    frame.repaint();
+                } else {
+                    JOptionPane.showMessageDialog(frame, "Aerodrome is overflow");
+                }
+            } else {
+                return;
+            }
+        } else {
+            JOptionPane.showMessageDialog(frame, "Select aerodrome!!!", "ERROR", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     private void setAirplane() {
@@ -127,8 +142,7 @@ public class FormAerodrome {
                 JOptionPane.showMessageDialog(frame, colorDialog);
                 if (colorDialog.getColor() != null) {
                     Airplane airplane = new Airbus(225, 1500, tempColor,
-                            colorDialog.getColor(), true, true, true, true,
-                            0, 0);
+                            colorDialog.getColor(), true, true, true, true);
                     if (aerodromeCollection.get(listBoxAerodrome.getSelectedValue()).plus(airplane)) {
                         frame.repaint();
                     } else {
@@ -208,7 +222,7 @@ public class FormAerodrome {
                 frame.repaint();
             }
         } else {
-            JOptionPane.showMessageDialog(frame, "Selected aerodrome!!!", "Ошибка", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(frame, "Selected aerodrome!!!", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
