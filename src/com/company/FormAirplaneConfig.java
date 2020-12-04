@@ -373,5 +373,4 @@ public class FormAirplaneConfig extends JDialog {
             return null;
         }
     }
-
 }
