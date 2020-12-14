@@ -21,22 +21,21 @@ public class Aerodrome<T extends AirTransport, I extends Additions> {
         pictureHeight = picHeight;
     }
 
-    public boolean plus(T airTransport) {
-        if (places.size() < size) {
-            places.add(airTransport);
-            return true;
+    public boolean plus(T airTransport) throws AerodromeOverflowException {
+        if (places.size() >= size) {
+            throw new AerodromeOverflowException();
         }
-        return false;
+        places.add(airTransport);
+        return true;
     }
 
-    public T minus(int index) {
-        if (index >= 0 && index < size && places.get(index) != null) {
-            T airTransport = places.get(index);
-            places.remove(index);
-            return airTransport;
-        } else {
-            return null;
+    public T minus(int index) throws AerodromeNotFoundException {
+        if (index < 0 || index >= places.size()) {
+            throw new AerodromeNotFoundException(index);
         }
+        T airTransport = places.get(index);
+        places.remove(index);
+        return airTransport;
     }
 
     public boolean Equals(int count) {

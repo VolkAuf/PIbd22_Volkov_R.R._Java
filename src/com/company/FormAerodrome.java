@@ -3,9 +3,14 @@ package com.company;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.awt.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Objects;
+
+import org.apache.log4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.PropertyConfigurator;
 
 public class FormAerodrome {
 
@@ -17,6 +22,7 @@ public class FormAerodrome {
     private final JTextField fieldAerodromeName;
     private final JTextField fieldTakeIndex;
     private final DrawWindowAerodrome drawWindowAerodrome;
+    private final Logger logger;
 
     public FormAerodrome() {
 
@@ -27,6 +33,8 @@ public class FormAerodrome {
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setLayout(null);
+        logger = LogManager.getLogger(FormAerodrome.class);
+        PropertyConfigurator.configure("src/com/company/log4j2.properties");
 
         aerodromeCollection = new AerodromeCollection(650, 550);
 
@@ -117,89 +125,61 @@ public class FormAerodrome {
     }
 
     private void setAirTransport() {
-        if (listBoxAerodrome.getSelectedIndex() >= 0) {
+        if (listBoxAerodrome.getSelectedValue() == null) {
+            JOptionPane.showMessageDialog(frame, "Aerodrome not selected", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
             FormAirplaneConfig formAirplaneConfig = new FormAirplaneConfig(frame);
             Airplane airplane = formAirplaneConfig.getAirplane();
 
-            if (airplane != null) {
-                if (aerodromeCollection.get(listBoxAerodrome.getSelectedValue()).plus(airplane)) {
-                    frame.repaint();
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Aerodrome is overflow");
-                }
-            } else {
+            if (airplane == null) {
                 return;
             }
-        } else {
-            JOptionPane.showMessageDialog(frame, "Select aerodrome!!!", "ERROR", JOptionPane.ERROR_MESSAGE);
+            if (aerodromeCollection.get(listBoxAerodrome.getSelectedValue()).plus(airplane)) {
+                logger.info("Airplane added from aerodrome " + listBoxAerodrome.getSelectedValue() + airplane);
+                frame.repaint();
+            }
+        } catch (AerodromeOverflowException e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Overflow", JOptionPane.ERROR_MESSAGE);
+            logger.warn(e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Unknown error", JOptionPane.ERROR_MESSAGE);
+            logger.fatal(e.getMessage());
         }
     }
 
-    private void setAirplane() {
-        if (listBoxAerodrome.getSelectedIndex() >= 0) {
-            JColorChooser colorDialog = new JColorChooser();
-            JOptionPane.showMessageDialog(frame, colorDialog);
-            if (colorDialog.getColor() != null) {
-                Airplane airplane = new Airplane(225, 1500, colorDialog.getColor());
-                if (aerodromeCollection.get(listBoxAerodrome.getSelectedValue()).plus(airplane)) {
-                    frame.repaint();
-                } else {
-                    JOptionPane.showMessageDialog(frame, "Aerodrome is overflow");
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(frame, "Select aerodrome!!!", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void setAirbus() {
-        if (listBoxAerodrome.getSelectedIndex() >= 0) {
-            JColorChooser colorDialog = new JColorChooser();
-            JOptionPane.showMessageDialog(frame, colorDialog);
-            Color tempColor = colorDialog.getColor();
-            if (colorDialog.getColor() != null) {
-                JOptionPane.showMessageDialog(frame, colorDialog);
-                if (colorDialog.getColor() != null) {
-                    Airplane airplane = new Airbus(225, 1500, tempColor,
-                            colorDialog.getColor(), true, true, true, true);
-                    if (aerodromeCollection.get(listBoxAerodrome.getSelectedValue()).plus(airplane)) {
-                        frame.repaint();
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "Aerodrome is overflow");
-                    }
-                }
-            }
-        } else {
-            JOptionPane.showMessageDialog(frame, "Selected aerodrome", "ERROR", JOptionPane.ERROR_MESSAGE);
-        }
-    }
 
     public void takeAirplane() {
-        if (listBoxAerodrome.getSelectedIndex() >= 0) {
-            if (!fieldTakeIndex.getText().equals("")) {
-                try {
-                    Airplane airplane = aerodromeCollection.get(listBoxAerodrome.getSelectedValue()).
-                            minus(Integer.parseInt(fieldTakeIndex.getText()));
-                    if (airplane != null) {
-                        airplaneLinkedList.add(airplane);
-                        frame.repaint();
-                    } else {
-                        JOptionPane.showMessageDialog(frame, "This index does not exist");
-                    }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(frame, "This index does not exist");
-                }
+        if (listBoxAerodrome.getSelectedValue() == null) {
+            JOptionPane.showMessageDialog(frame, "Aerodrome not selected", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        try {
+            Airplane airplane = aerodromeCollection.get(listBoxAerodrome.getSelectedValue()).minus(Integer.parseInt(fieldTakeIndex.getText()));
+            if (airplane != null) {
+                airplaneLinkedList.add(airplane);
+                frame.repaint();
+                logger.info("from aerodrome " + listBoxAerodrome.getSelectedValue() + " take airplane " + airplane + " and put in collection");
             }
-        } else {
-            JOptionPane.showMessageDialog(frame, "Selected aerodrome!!!", "ERROR", JOptionPane.ERROR_MESSAGE);
+        } catch (AerodromeNotFoundException e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Not found", JOptionPane.ERROR_MESSAGE);
+            logger.warn(e.getMessage());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Unknown error", JOptionPane.ERROR_MESSAGE);
+            logger.fatal(e.getMessage());
         }
     }
 
     private void moveToFrame() {
         if (!airplaneLinkedList.isEmpty()) {
             FormAirplane formAirplane = new FormAirplane();
-            formAirplane.setAirTransport(Objects.requireNonNull(airplaneLinkedList.poll()));
+            AirTransport airplane = airplaneLinkedList.poll();
+            formAirplane.setAirTransport(Objects.requireNonNull(airplane));
+            logger.info("Airplane " + airplane + " take in aerodrome");
             frame.repaint();
+        } else {
+            JOptionPane.showMessageDialog(frame, "Collection is empty", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -225,6 +205,7 @@ public class FormAerodrome {
         if (!fieldAerodromeName.getText().equals("")) {
             aerodromeCollection.addAerodrome(fieldAerodromeName.getText());
             reloadLevels();
+            logger.info("Aerodrome is added " + fieldAerodromeName.getText());
             frame.repaint();
         } else {
             JOptionPane.showMessageDialog(frame, "Write Aerodrome name!!!", "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -238,6 +219,7 @@ public class FormAerodrome {
                     JOptionPane.YES_NO_OPTION);
             if (result == JOptionPane.YES_OPTION) {
                 aerodromeCollection.deleteAerodrome(listBoxAerodrome.getSelectedValue());
+                logger.info("Aerodrome " + listBoxAerodrome.getSelectedValue() + " deleted");
                 reloadLevels();
                 frame.repaint();
             }
@@ -249,6 +231,9 @@ public class FormAerodrome {
 
     private void listListener() {
         drawWindowAerodrome.setSelectedItem(listBoxAerodrome.getSelectedValue());
+        if (listBoxAerodrome.getSelectedValue() != null) {
+            logger.info("Aerodrome " + listBoxAerodrome.getSelectedValue() + " is selected");
+        }
         frame.repaint();
     }
 
@@ -257,10 +242,16 @@ public class FormAerodrome {
         fileSaveDialog.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
         int result = fileSaveDialog.showSaveDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
-            if (aerodromeCollection.saveFile(fileSaveDialog.getSelectedFile().getPath())) {
-                JOptionPane.showMessageDialog(frame, "Save complete", "Result", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(frame, "Save not complete", "Error", JOptionPane.ERROR_MESSAGE);
+            try {
+                aerodromeCollection.saveFile(fileSaveDialog.getSelectedFile().getPath());
+                JOptionPane.showMessageDialog(frame, "File saved", "Result", JOptionPane.INFORMATION_MESSAGE);
+                logger.info("Data is saved " + fileSaveDialog.getSelectedFile().getPath());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Error saved", JOptionPane.ERROR_MESSAGE);
+                logger.error(e.getMessage());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Unknown saved", JOptionPane.ERROR_MESSAGE);
+                logger.fatal(e.getMessage());
             }
         }
     }
@@ -270,12 +261,24 @@ public class FormAerodrome {
         fileOpenDialog.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
         int result = fileOpenDialog.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
-            if (aerodromeCollection.loadFile(fileOpenDialog.getSelectedFile().getPath())) {
-                JOptionPane.showMessageDialog(frame, "Load complete", "Result", JOptionPane.INFORMATION_MESSAGE);
+            try {
+                aerodromeCollection.loadFile(fileOpenDialog.getSelectedFile().getPath());
+                JOptionPane.showMessageDialog(frame, "File load", "Result", JOptionPane.INFORMATION_MESSAGE);
+                logger.info("Date load from file " + fileOpenDialog.getSelectedFile().getPath());
                 reloadLevels();
                 frame.repaint();
-            } else {
-                JOptionPane.showMessageDialog(frame, "Load not complete", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (AerodromeOverflowException e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Overflow", JOptionPane.ERROR_MESSAGE);
+                logger.warn(e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "File not found", JOptionPane.ERROR_MESSAGE);
+                logger.error(e.getMessage());
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Uncorrected argument", JOptionPane.ERROR_MESSAGE);
+                logger.error(e.getMessage());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Unknown error", JOptionPane.ERROR_MESSAGE);
+                logger.error(e.getMessage());
             }
         }
     }
@@ -289,10 +292,16 @@ public class FormAerodrome {
         }
         int result = fileSaveDialog.showSaveDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
-            if (aerodromeCollection.saveAerodrome(fileSaveDialog.getSelectedFile().getPath(), listBoxAerodrome.getSelectedValue())) {
+            try {
+                aerodromeCollection.saveFile(fileSaveDialog.getSelectedFile().getPath());
                 JOptionPane.showMessageDialog(frame, "File saved", "Result", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(frame, "File not saved", "Error", JOptionPane.ERROR_MESSAGE);
+                logger.info("Data is saved" + fileSaveDialog.getSelectedFile().getPath());
+            } catch (IOException e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Error saved", JOptionPane.ERROR_MESSAGE);
+                logger.error(e.getMessage());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Unknown error", JOptionPane.ERROR_MESSAGE);
+                logger.fatal(e.getMessage());
             }
         }
     }
@@ -302,12 +311,24 @@ public class FormAerodrome {
         fileOpenDialog.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
         int result = fileOpenDialog.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
-            if (aerodromeCollection.loadAerodrome(fileOpenDialog.getSelectedFile().getPath())) {
-                JOptionPane.showMessageDialog(frame, "Download complete", "Result", JOptionPane.INFORMATION_MESSAGE);
+            try {
+                aerodromeCollection.loadFile(fileOpenDialog.getSelectedFile().getPath());
+                JOptionPane.showMessageDialog(frame, "File is load", "Результат", JOptionPane.INFORMATION_MESSAGE);
+                logger.info("Data load from file" + fileOpenDialog.getSelectedFile().getPath());
                 reloadLevels();
                 frame.repaint();
-            } else {
-                JOptionPane.showMessageDialog(frame, "Download not complete", "Error", JOptionPane.ERROR_MESSAGE);
+            } catch (AerodromeOverflowException e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Overflow", JOptionPane.ERROR_MESSAGE);
+                logger.warn(e.getMessage());
+            } catch (FileNotFoundException e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Файл не найден", JOptionPane.ERROR_MESSAGE);
+                logger.error(e.getMessage());
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Некорректные данные", JOptionPane.ERROR_MESSAGE);
+                logger.error(e.getMessage());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(frame, e.getMessage(), "Неизвестная ошибка", JOptionPane.ERROR_MESSAGE);
+                logger.fatal(e.getMessage());
             }
         }
     }
