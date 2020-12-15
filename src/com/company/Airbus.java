@@ -1,8 +1,9 @@
 package com.company;
 
 import java.awt.*;
+import java.util.Iterator;
 
-public class Airbus extends Airplane implements Comparable<Airplane>{
+public class Airbus extends Airplane implements Comparable<Airplane> {
 
     public Color dopColor;
     public boolean backTurbine;
@@ -63,23 +64,36 @@ public class Airbus extends Airplane implements Comparable<Airplane>{
                   boolean backTurbine, boolean sideTurbine, boolean marketLine, boolean regulTail) {
         super(maxSpeed, weight, mainColor, 230, 130);
         this.dopColor = dopColor;
+        listProperties.add(dopColor);
         this.backTurbine = backTurbine;
+        listProperties.add(backTurbine);
         this.sideTurbine = sideTurbine;
+        listProperties.add(sideTurbine);
         this.marketLine = marketLine;
+        listProperties.add(marketLine);
         this.regulTail = regulTail;
+        listProperties.add(regulTail);
     }
 
     public Airbus(String info) {
         String[] args = info.split(separator);
         if (args.length == 9) {
             maxSpeed = Integer.parseInt(args[0]);
+            listProperties.add(maxSpeed);
             weight = Float.parseFloat(args[1]);
+            listProperties.add(weight);
             mainColor = new Color(Integer.parseInt(args[2]));
+            listProperties.add(mainColor);
             dopColor = new Color(Integer.parseInt(args[3]));
+            listProperties.add(dopColor);
             backTurbine = Boolean.parseBoolean(args[4]);
+            listProperties.add(backTurbine);
             sideTurbine = Boolean.parseBoolean(args[5]);
+            listProperties.add(sideTurbine);
             marketLine = Boolean.parseBoolean(args[6]);
+            listProperties.add(marketLine);
             regulTail = Boolean.parseBoolean(args[7]);
+            listProperties.add(regulTail);
             if (args[8].contains("null")) {
                 additions = null;
             } else {

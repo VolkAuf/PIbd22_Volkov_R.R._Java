@@ -1,23 +1,34 @@
 package com.company;
 
 import java.awt.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
-public class Airplane extends AirTransport implements Comparable<Airplane> {
+public class Airplane extends AirTransport implements Comparable<Airplane>, Iterable<Object>, Iterator<Object> {
 
     protected int airplaneWidth = 230;
     protected int airplaneHeight = 130;
     protected String separator = ";";
+    protected LinkedList<Object> listProperties = new LinkedList<>();
+    public int currentIndex = -1;
 
     public Airplane(int maxSpeed, float weight, Color mainColor) {
         this.maxSpeed = maxSpeed;
+        listProperties.add(maxSpeed);
         this.weight = weight;
+        listProperties.add(weight);
         this.mainColor = mainColor;
+        listProperties.add(mainColor);
     }
 
     protected Airplane(int maxSpeed, float weight, Color mainColor, int airplaneWidth, int airplaneHeight) {
         this.maxSpeed = maxSpeed;
+        listProperties.add(maxSpeed);
         this.weight = weight;
+        listProperties.add(weight);
         this.mainColor = mainColor;
+        listProperties.add(mainColor);
         this.airplaneWidth = airplaneWidth;
         this.airplaneHeight = airplaneHeight;
     }
@@ -26,8 +37,11 @@ public class Airplane extends AirTransport implements Comparable<Airplane> {
         String[] args = info.split(separator);
         if (args.length == 3) {
             maxSpeed = Integer.parseInt(args[0]);
+            listProperties.add(maxSpeed);
             weight = Float.parseFloat(args[1]);
+            listProperties.add(weight);
             mainColor = new Color(Integer.parseInt(args[2]));
+            listProperties.add(mainColor);
         }
     }
 
@@ -230,5 +244,26 @@ public class Airplane extends AirTransport implements Comparable<Airplane> {
             return Integer.compare(mainColor.getRGB(), airplane.getMainColor().getRGB());
         }
         return 0;
+    }
+
+    @Override
+    public Iterator<Object> iterator() {
+        currentIndex = -1;
+        return listProperties.iterator();
+    }
+
+
+    @Override
+    public boolean hasNext() {
+        return (currentIndex + 1 < listProperties.size());
+    }
+
+    @Override
+    public Object next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        currentIndex++;
+        return listProperties.get(currentIndex);
     }
 }
