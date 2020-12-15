@@ -41,6 +41,7 @@ public class FormAerodrome {
         drawWindowAerodrome = new DrawWindowAerodrome(aerodromeCollection);
 
         JButton buttonCreateAirTransport = new JButton("AirTransport");
+        JButton buttonSort = new JButton("Сортировать");
 
         JPanel groupboxTakeIt = new JPanel();
         Border mainBorder = BorderFactory.createTitledBorder("Take AirTransport");
@@ -63,6 +64,7 @@ public class FormAerodrome {
         frame.getContentPane().add(buttonCreateAirTransport);
         frame.getContentPane().add(buttonTakeInLinkedList);
         frame.getContentPane().add(drawWindowAerodrome);
+        frame.getContentPane().add(buttonSort);
 
         groupboxTakeIt.add(fieldTakeIndex);
         groupboxTakeIt.add(buttonTakeInLinkedList);
@@ -86,14 +88,15 @@ public class FormAerodrome {
         fieldTakeIndex.setBounds(105, 20, 75, 30);
         buttonTakeInLinkedList.setBounds(20, 60, 160, 30);
         buttonGetFromLinkedList.setBounds(20, 95, 160, 30);
+        buttonSort.setBounds(570, 260, 200, 40);
 
-        groupboxAerodrome.setBounds(570, 0, 200, 300);
+        groupboxAerodrome.setBounds(570, 0, 200, 250);
         groupboxAerodrome.setLayout(null);
         labelAerodromeName.setBounds(20, 20, 85, 30);
         fieldAerodromeName.setBounds(105, 20, 75, 30);
         buttonCreateAerodrome.setBounds(20, 60, 160, 30);
         buttonDeleteAerodrome.setBounds(20, 95, 160, 30);
-        listBoxAerodrome.setBounds(20, 140, 160, 150);
+        listBoxAerodrome.setBounds(20, 140, 160, 100);
 
         buttonCreateAirTransport.addActionListener(e -> setAirTransport());
         buttonTakeInLinkedList.addActionListener(e -> takeAirplane());
@@ -101,6 +104,7 @@ public class FormAerodrome {
         buttonCreateAerodrome.addActionListener(e -> addAerodrome());
         buttonDeleteAerodrome.addActionListener(e -> deleteAerodrome());
         listBoxAerodrome.addListSelectionListener(e -> listListener());
+        buttonSort.addActionListener(e -> sort());
 
         JMenuBar menuBar = new JMenuBar();
         frame.setJMenuBar(menuBar);
@@ -143,10 +147,15 @@ public class FormAerodrome {
         } catch (AerodromeOverflowException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Overflow", JOptionPane.ERROR_MESSAGE);
             logger.warn(e.getMessage());
-        } catch (Exception e) {
+        } catch (AerodromeAlreadyHaveException e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Duplication", JOptionPane.ERROR_MESSAGE);
+            logger.warn("Duplication");
+        } catch (
+                Exception e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Unknown error", JOptionPane.ERROR_MESSAGE);
             logger.fatal(e.getMessage());
         }
+
     }
 
 
@@ -293,7 +302,7 @@ public class FormAerodrome {
         int result = fileSaveDialog.showSaveDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
-                aerodromeCollection.saveFile(fileSaveDialog.getSelectedFile().getPath());
+                aerodromeCollection.saveAerodrome(fileSaveDialog.getSelectedFile().getPath(),listBoxAerodrome.getSelectedValue());
                 JOptionPane.showMessageDialog(frame, "File saved", "Result", JOptionPane.INFORMATION_MESSAGE);
                 logger.info("Data is saved" + fileSaveDialog.getSelectedFile().getPath());
             } catch (IOException e) {
@@ -312,7 +321,7 @@ public class FormAerodrome {
         int result = fileOpenDialog.showOpenDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
-                aerodromeCollection.loadFile(fileOpenDialog.getSelectedFile().getPath());
+                aerodromeCollection.loadAerodrome(fileOpenDialog.getSelectedFile().getPath());
                 JOptionPane.showMessageDialog(frame, "File is load", "Результат", JOptionPane.INFORMATION_MESSAGE);
                 logger.info("Data load from file" + fileOpenDialog.getSelectedFile().getPath());
                 reloadLevels();
@@ -331,5 +340,15 @@ public class FormAerodrome {
                 logger.fatal(e.getMessage());
             }
         }
+    }
+
+    private void sort() {
+        if (listBoxAerodrome.getSelectedValue() == null) {
+            JOptionPane.showMessageDialog(frame, "Aerodrome not selected", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        aerodromeCollection.get(listBoxAerodrome.getSelectedValue()).sort();
+        frame.repaint();
+        logger.info("Airplane " + listBoxAerodrome.getSelectedValue() + " is sorted");
     }
 }

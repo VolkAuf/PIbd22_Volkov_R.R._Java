@@ -2,7 +2,7 @@ package com.company;
 
 import java.awt.*;
 
-public class Airplane extends AirTransport {
+public class Airplane extends AirTransport implements Comparable<Airplane> {
 
     protected int airplaneWidth = 230;
     protected int airplaneHeight = 130;
@@ -186,5 +186,49 @@ public class Airplane extends AirTransport {
     @Override
     public String toString() {
         return maxSpeed + separator + weight + separator + mainColor.getRGB();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof Airplane airplaneObject)) {
+            return false;
+        }
+        return equals(airplaneObject);
+    }
+
+    public boolean equals(Airplane other) {
+        if (other == null) {
+            return false;
+        }
+        if (!this.getClass().getSimpleName().equals(other.getClass().getSimpleName())) {
+            return false;
+        }
+        if (maxSpeed != other.maxSpeed) {
+            return false;
+        }
+        if (weight != other.weight) {
+            return false;
+        }
+        if (mainColor != other.mainColor) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int compareTo(Airplane airplane) {
+        if (maxSpeed != airplane.maxSpeed) {
+            return Integer.compare(maxSpeed, airplane.maxSpeed);
+        }
+        if (weight != airplane.weight) {
+            return Float.compare(weight, airplane.weight);
+        }
+        if (mainColor != airplane.mainColor) {
+            return Integer.compare(mainColor.getRGB(), airplane.getMainColor().getRGB());
+        }
+        return 0;
     }
 }

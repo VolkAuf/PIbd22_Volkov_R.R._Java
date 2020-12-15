@@ -2,7 +2,7 @@ package com.company;
 
 import java.awt.*;
 
-public class Airbus extends Airplane {
+public class Airbus extends Airplane implements Comparable<Airplane>{
 
     public Color dopColor;
     public boolean backTurbine;
@@ -49,6 +49,10 @@ public class Airbus extends Airplane {
 
     public void setRegulTail(boolean regulTail) {
         this.regulTail = regulTail;
+    }
+
+    public Additions getAdditions() {
+        return additions;
     }
 
     public void setAdditions(Additions additions) {
@@ -207,6 +211,84 @@ public class Airbus extends Airplane {
     public String toString() {
         return maxSpeed + separator + weight + separator + mainColor.getRGB() + separator + dopColor.getRGB() + separator
                 + backTurbine + separator + sideTurbine + separator + marketLine + separator + regulTail + separator + additions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof Airbus airbusObject)) {
+            return false;
+        }
+        return equals(airbusObject);
+    }
+
+    public boolean equals(Airbus other) {
+        if (other == null) {
+            return false;
+        }
+        if (!this.getClass().getSimpleName().equals(other.getClass().getSimpleName())) {
+            return false;
+        }
+        if (maxSpeed != other.maxSpeed) {
+            return false;
+        }
+        if (weight != other.weight) {
+            return false;
+        }
+        if (mainColor != other.mainColor) {
+            return false;
+        }
+        if (dopColor != other.dopColor) {
+            return false;
+        }
+        if (backTurbine != other.backTurbine) {
+            return false;
+        }
+        if (sideTurbine != other.sideTurbine) {
+            return false;
+        }
+        if (marketLine != other.marketLine) {
+            return false;
+        }
+        if (regulTail != other.regulTail) {
+            return false;
+        }
+        if (additions != null && other.additions != null && !(additions.toString().equals(other.additions.toString()))) {
+            return false;
+        }
+        if (additions == null ^ other.additions == null) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int compareTo(Airplane airplane) {
+        Airbus airbus = (Airbus) airplane;
+        if (dopColor != airbus.dopColor) {
+            return Integer.compare(dopColor.getRGB(), airbus.getDopColor().getRGB());
+        }
+        if (backTurbine != airbus.backTurbine) {
+            return Boolean.compare(backTurbine, airbus.backTurbine);
+        }
+        if (sideTurbine != airbus.sideTurbine) {
+            return Boolean.compare(sideTurbine, airbus.sideTurbine);
+        }
+        if (marketLine != airbus.marketLine) {
+            return Boolean.compare(marketLine, airbus.marketLine);
+        }
+        if (regulTail != airbus.regulTail) {
+            return Boolean.compare(regulTail, airbus.regulTail);
+        }
+        if (additions == null && airbus.additions != null) {
+            return 1;
+        }
+        if (additions != null && airbus.additions == null) {
+            return -1;
+        }
+        return 0;
     }
 }
 

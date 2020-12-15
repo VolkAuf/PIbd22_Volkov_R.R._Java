@@ -50,8 +50,7 @@ public class AerodromeCollection {
             for (Map.Entry<String, Aerodrome<Airplane, Additions>> level : aerodromeStages.entrySet()) {
                 fileWriter.write("Aerodrome" + separator + level.getKey() + '\n');
 
-                Airplane airplane;
-                for (int i = 0; (airplane = level.getValue().get(i)) != null; i++) {
+                for (Airplane airplane : level.getValue()) {
                     if (airplane.getClass().getSimpleName().equals("Airplane")) {
                         fileWriter.write("Airplane" + separator);
                     } else if (airplane.getClass().getSimpleName().equals("Airbus")) {
@@ -63,7 +62,7 @@ public class AerodromeCollection {
         }
     }
 
-    public void loadFile(String filename) throws IOException, AerodromeOverflowException {
+    public void loadFile(String filename) throws IOException, AerodromeOverflowException, AerodromeAlreadyHaveException {
         if (!(new File(filename).exists())) {
             throw new FileNotFoundException("File " + filename + " not found");
         }
@@ -121,7 +120,7 @@ public class AerodromeCollection {
         }
     }
 
-    public void loadAerodrome(String filename) throws IOException, AerodromeOverflowException {
+    public void loadAerodrome(String filename) throws IOException, AerodromeOverflowException, AerodromeAlreadyHaveException {
         try (FileReader fileReader = new FileReader(filename)) {
             Scanner scanner = new Scanner(fileReader);
             String key;
