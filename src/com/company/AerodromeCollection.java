@@ -1,9 +1,7 @@
 package com.company;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
+import java.security.KeyException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -43,7 +41,7 @@ public class AerodromeCollection {
         return null;
     }
 
-    public boolean saveFile(String filename) {
+    public void saveFile(String filename) throws IOException {
         if (!filename.contains(".txt")) {
             filename += ".txt";
         }
@@ -62,23 +60,19 @@ public class AerodromeCollection {
                     fileWriter.write(airplane.toString() + '\n');
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return true;
     }
 
-    public boolean loadFile(String filename) {
+    public void loadFile(String filename) throws IOException, AerodromeOverflowException {
         if (!(new File(filename).exists())) {
-            return false;
+            throw new FileNotFoundException("File " + filename + " not found");
         }
-
         try (FileReader fileReader = new FileReader(filename)) {
             Scanner scanner = new Scanner(fileReader);
             if (scanner.nextLine().contains("AerodromeCollection")) {
                 aerodromeStages.clear();
             } else {
-                return false;
+                throw new IllegalArgumentException("Invalid file format");
             }
 
             Airplane airplane = null;
@@ -97,17 +91,14 @@ public class AerodromeCollection {
                         airplane = new Airbus(line.split(separator)[1]);
                     }
                     if (!(aerodromeStages.get(key).plus(airplane))) {
-                        return false;
+                        throw new AerodromeOverflowException();
                     }
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return true;
     }
 
-    public boolean saveAerodrome(String filename, String key) {
+    public void saveAerodrome(String filename, String key) throws IOException, KeyException {
         if (!filename.contains(".txt")) {
             filename += ".txt";
         }
@@ -124,15 +115,13 @@ public class AerodromeCollection {
                     }
                     fileWriter.write(airplane.toString() + '\n');
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
             }
-            return true;
+        } else {
+            throw new KeyException();
         }
-        return false;
     }
 
-    public boolean loadAerodrome(String filename) {
+    public void loadAerodrome(String filename) throws IOException, AerodromeOverflowException {
         try (FileReader fileReader = new FileReader(filename)) {
             Scanner scanner = new Scanner(fileReader);
             String key;
@@ -147,7 +136,7 @@ public class AerodromeCollection {
                     aerodromeStages.put(key, new Aerodrome<>(pictureWidth, pictureHeight));
                 }
             } else {
-                return false;
+                throw new IllegalArgumentException("Invalid file format");
             }
 
             Airplane airplane = null;
@@ -160,14 +149,11 @@ public class AerodromeCollection {
                         airplane = new Airbus(line.split(separator)[1]);
                     }
                     if (!(aerodromeStages.get(key).plus(airplane))) {
-                        return false;
+                        throw new AerodromeOverflowException();
                     }
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        return true;
     }
 
     public Airplane get(String name, int index) {
