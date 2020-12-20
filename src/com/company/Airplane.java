@@ -1,23 +1,34 @@
 package com.company;
 
 import java.awt.*;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
-public class Airplane extends AirTransport {
+public class Airplane extends AirTransport implements Comparable<Airplane>, Iterable<Object>, Iterator<Object> {
 
     protected int airplaneWidth = 230;
     protected int airplaneHeight = 130;
     protected String separator = ";";
+    protected LinkedList<Object> listProperties = new LinkedList<>();
+    public int currentIndex = -1;
 
     public Airplane(int maxSpeed, float weight, Color mainColor) {
         this.maxSpeed = maxSpeed;
+        listProperties.add(maxSpeed);
         this.weight = weight;
+        listProperties.add(weight);
         this.mainColor = mainColor;
+        listProperties.add(mainColor);
     }
 
     protected Airplane(int maxSpeed, float weight, Color mainColor, int airplaneWidth, int airplaneHeight) {
         this.maxSpeed = maxSpeed;
+        listProperties.add(maxSpeed);
         this.weight = weight;
+        listProperties.add(weight);
         this.mainColor = mainColor;
+        listProperties.add(mainColor);
         this.airplaneWidth = airplaneWidth;
         this.airplaneHeight = airplaneHeight;
     }
@@ -26,8 +37,11 @@ public class Airplane extends AirTransport {
         String[] args = info.split(separator);
         if (args.length == 3) {
             maxSpeed = Integer.parseInt(args[0]);
+            listProperties.add(maxSpeed);
             weight = Float.parseFloat(args[1]);
+            listProperties.add(weight);
             mainColor = new Color(Integer.parseInt(args[2]));
+            listProperties.add(mainColor);
         }
     }
 
@@ -186,5 +200,69 @@ public class Airplane extends AirTransport {
     @Override
     public String toString() {
         return maxSpeed + separator + weight + separator + mainColor.getRGB();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof Airplane airplaneObject)) {
+            return false;
+        }
+        return equals(airplaneObject);
+    }
+
+    public boolean equals(Airplane other) {
+        if (other == null) {
+            return false;
+        }
+        if (!this.getClass().getSimpleName().equals(other.getClass().getSimpleName())) {
+            return false;
+        }
+        if (maxSpeed != other.maxSpeed) {
+            return false;
+        }
+        if (weight != other.weight) {
+            return false;
+        }
+        if (mainColor != other.mainColor) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int compareTo(Airplane airplane) {
+        if (maxSpeed != airplane.maxSpeed) {
+            return Integer.compare(maxSpeed, airplane.maxSpeed);
+        }
+        if (weight != airplane.weight) {
+            return Float.compare(weight, airplane.weight);
+        }
+        if (mainColor != airplane.mainColor) {
+            return Integer.compare(mainColor.getRGB(), airplane.getMainColor().getRGB());
+        }
+        return 0;
+    }
+
+    @Override
+    public Iterator<Object> iterator() {
+        currentIndex = -1;
+        return listProperties.iterator();
+    }
+
+    @Override
+    public boolean hasNext() {
+        return (currentIndex + 1 < listProperties.size());
+    }
+
+    @Override
+    public Object next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        currentIndex++;
+        return listProperties.get(currentIndex);
     }
 }

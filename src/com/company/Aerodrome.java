@@ -1,16 +1,17 @@
 package com.company;
 
 import java.awt.*;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
-public class Aerodrome<T extends AirTransport, I extends Additions> {
+public class Aerodrome<T extends AirTransport, I extends Additions> implements Iterator<T>, Iterable<T> {
     private final List<T> places;
     private final int pictureWidth;
     private final int pictureHeight;
     private final int placeSizeWidth = 240;
     private final int placeSizeHeight = 140;
     private final int size;
+    private int currentIndex;
 
     public Aerodrome(int picWidth, int picHeight) {
         int width = picWidth / placeSizeWidth;
@@ -19,11 +20,15 @@ public class Aerodrome<T extends AirTransport, I extends Additions> {
         size = width * height;
         pictureWidth = picWidth;
         pictureHeight = picHeight;
+        currentIndex = -1;
     }
 
-    public boolean plus(T airTransport) throws AerodromeOverflowException {
+    public boolean plus(T airTransport) throws AerodromeOverflowException, AerodromeAlreadyHaveException {
         if (places.size() >= size) {
             throw new AerodromeOverflowException();
+        }
+        if (places.contains(airTransport)) {
+            throw new AerodromeAlreadyHaveException();
         }
         places.add(airTransport);
         return true;
@@ -90,6 +95,36 @@ public class Aerodrome<T extends AirTransport, I extends Additions> {
             return places.get(index);
         }
         return null;
+    }
+
+    public void sort() {
+        places.sort((Comparator<? super T>) new AirplaneComparer());
+    }
+
+    @Override
+    public boolean hasNext() {
+        return currentIndex < places.size() - 1;
+    }
+
+    @Override
+    public T next() {
+        if (!hasNext()) {
+            throw new NoSuchElementException();
+        }
+        currentIndex++;
+        return places.get(currentIndex);
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        currentIndex = -1;
+        return this;
+    }
+
+    public void printInfo() {
+        for (T airplane : places) {
+            System.out.println(airplane);
+        }
     }
 
     public void clear() {
