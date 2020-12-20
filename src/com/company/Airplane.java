@@ -252,7 +252,6 @@ public class Airplane extends AirTransport implements Comparable<Airplane>, Iter
         return listProperties.iterator();
     }
 
-
     @Override
     public boolean hasNext() {
         return (currentIndex + 1 < listProperties.size());
