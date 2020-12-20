@@ -12,18 +12,18 @@ public class AirplaneComparer implements Comparator<AirTransport> {
         int result;
         switch (x.getClass().getSimpleName()) {
             case "Airplane" -> {
-                result = comparerTruck((Airplane) x, (Airplane) y);
+                result = comparerAirplane((Airplane) x, (Airplane) y);
                 return result;
             }
-            case "Tanker" -> {
-                result = comparerTanker((Airbus) x, (Airbus) y);
+            case "Airbus" -> {
+                result = comparerAirbus((Airbus) x, (Airbus) y);
                 return result;
             }
         }
         return 1;
     }
 
-    private int comparerTruck(Airplane x, Airplane y) {
+    private int comparerAirplane(Airplane x, Airplane y) {
         if (x.getMaxSpeed() != y.getMaxSpeed()) {
             return Integer.compare(x.getMaxSpeed(), y.getMaxSpeed());
         }
@@ -36,8 +36,8 @@ public class AirplaneComparer implements Comparator<AirTransport> {
         return 0;
     }
 
-    private int comparerTanker(Airbus x, Airbus y) {
-        int result = comparerTruck(x, y);
+    private int comparerAirbus(Airbus x, Airbus y) {
+        int result = comparerAirplane(x, y);
         if (result != 0) {
             return result;
         }

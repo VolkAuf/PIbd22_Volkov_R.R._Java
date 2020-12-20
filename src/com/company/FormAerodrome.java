@@ -41,7 +41,7 @@ public class FormAerodrome {
         drawWindowAerodrome = new DrawWindowAerodrome(aerodromeCollection);
 
         JButton buttonCreateAirTransport = new JButton("AirTransport");
-        JButton buttonSort = new JButton("Сортировать");
+        JButton buttonSort = new JButton("Sort");
 
         JPanel groupboxTakeIt = new JPanel();
         Border mainBorder = BorderFactory.createTitledBorder("Take AirTransport");
@@ -155,7 +155,6 @@ public class FormAerodrome {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Unknown error", JOptionPane.ERROR_MESSAGE);
             logger.fatal(e.getMessage());
         }
-
     }
 
 
@@ -302,7 +301,7 @@ public class FormAerodrome {
         int result = fileSaveDialog.showSaveDialog(frame);
         if (result == JFileChooser.APPROVE_OPTION) {
             try {
-                aerodromeCollection.saveAerodrome(fileSaveDialog.getSelectedFile().getPath(),listBoxAerodrome.getSelectedValue());
+                aerodromeCollection.saveAerodrome(fileSaveDialog.getSelectedFile().getPath(), listBoxAerodrome.getSelectedValue());
                 JOptionPane.showMessageDialog(frame, "File saved", "Result", JOptionPane.INFORMATION_MESSAGE);
                 logger.info("Data is saved" + fileSaveDialog.getSelectedFile().getPath());
             } catch (IOException e) {
